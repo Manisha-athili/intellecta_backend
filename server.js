@@ -19,7 +19,8 @@ const PORT = process.env.PORT || 5000;
 
 app.use(cors(
   {
-  origin: ['https://intellecta-frontend.vercel.app'],  // allow frontend origin
+  origin: ['http://localhost:5173',
+    'https://intellecta-frontend.vercel.app'],  // allow frontend origin
   credentials: true                // allow cookies/credentials
 }
 )); 
@@ -27,7 +28,10 @@ app.use(cors(
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-
+app.get('/', (req, res) => {
+  res.json({ message: 'Backend is running 🚀' });
+});
+     
 app.use('/api', promptRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes); 
@@ -39,4 +43,4 @@ mongoose.connect(process.env.MONGO_URI)
 })
 .catch(err => console.error('DB connection failed:', err));
 
-app.listen(PORT, () => console.log(`Server running on port http://localhost:${PORT}/`));
+app.listen(PORT, () => console.log(`Server running on port http://localhost:${PORT}/`));  
