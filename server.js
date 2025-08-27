@@ -17,13 +17,23 @@ const PORT = process.env.PORT || 5000;
 // }
 // ));
 
-app.use(cors(
-  {
-  origin: ['http://localhost:5173',
-    'https://intellecta-frontend.vercel.app'],  // allow frontend origin
-  credentials: true                // allow cookies/credentials
-}
-)); 
+const allowedOrigins = [
+  'http://localhost:5173',
+  'https://intellecta-frontend.vercel.app'
+];
+
+app.use(cors({
+  origin: function (origin, callback) {
+    // Allow requests with no origin (like Postman) or if origin is whitelisted
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, origin);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true
+}));
+
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
